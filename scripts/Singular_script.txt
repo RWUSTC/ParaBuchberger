@@ -1,0 +1,10 @@
+ring r=42013, (s0,s1,s2,s3,s4,s5,s6,s7),dp;
+string s="ideal k="+read("/home/rwinters/Documents/Project/SpinChain/examples/XXX/Input/ideal_16_8.txt")+";";
+execute(s);
+degBound = 27;
+ideal q=groebner(k);
+write(":w /home/rwinters/Documents/Project/SpinChain/results/Singular/singular_16_8.txt",r);
+
+39 for 16_8 with degb of 30
+
+exit
