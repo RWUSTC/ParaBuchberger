@@ -1,0 +1,33 @@
+<transition name="compute">
+      <defun>
+        <require key="worker" mandatory="true"/>
+        <in name="in" type="task_token_type"/>
+        <in name="implementation" type="string"/>
+        <in name="options" type="option_token_type"/>
+        <out name="out" type="task_token_type"/>
+        <module name="singular_parallel_all"
+                require_function_unloads_without_rest="false"
+                function="compute (implementation,
+                                   options,
+                                   in,
+                                   out)">
+          <cinclude href="share/include/waitallfirst_interface.hpp"/>
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+          fhg::util::scoped_dlhandle
+            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+            .sym<decltype (singular_parallel_all_compute)> ("singular_parallel_all_compute")
+              ( in.base_filename, in.id
+              , options.function_name, options.needed_library
+              , options.in_struct_name, options.in_struct_desc
+              , options.out_struct_name, options.out_struct_desc
+              );
+          out = in;
+          ]]></code>
+        </module>
+      </defun>
+      <connect-in port="in" place="tasks"/>
+      <connect-read port="implementation" place="implementation"/>
+      <connect-read port="options" place="global_options"/>
+      <connect-out port="out" place="results"/>
+    </transition>

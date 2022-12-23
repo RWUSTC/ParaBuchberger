@@ -1,0 +1,2 @@
+ignore in_struct and out_struct_name
+property of data type
